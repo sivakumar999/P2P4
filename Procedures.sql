@@ -25,7 +25,7 @@ values
     ('TV', 52000, 'Samsung', 9),
     ('Watch', 28000, 'Apple', 11),
     ('TV', 13000, 'Redmi', 6),
-    ('Laptop', 35000, 'HTC', 14);
+    ('Laptop', 35000, 'HTC', 14)
 
 select * from Products
 --------------------------------------
@@ -33,12 +33,13 @@ create proc usp_GPD
 with encryption
 as
 begin
-    select PId,PName,PPrice,PTax,PCompany,PQty,(PQty * (PPrice + PTax)) as TotalPrice
+    select PId,PName,PPrice + PTax AS PriceWithTax,PCompany,(PQty * (PPrice + PTax)) as TotalPrice
     from Products
 end
 
 exec usp_GPD;
 
+delete proc usp_GPD
 
 ----------------Procedure for tatal tax-------------------------------------
 Create procedure usp_TotalTaxByCompany
@@ -54,6 +55,6 @@ end
 
 declare @TotalTax Float
 exec usp_GetTotalTaxByCompany
-    @PCompany = 'Samsung',
+    @PCompany = 'Apple',
     @TotalTax = @TotalTax output;
 select @TotalTax as TotalTax
